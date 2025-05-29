@@ -1,0 +1,102 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TK｜Kiwi 各國代購 下單處（批發）</title>
+  <style>
+    body {
+      font-family: 'Noto Sans TC', sans-serif;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+      background: #fff7f7;
+    }
+    h2 {
+      color: #d25c5c;
+    }
+    label {
+      font-weight: bold;
+    }
+    input, textarea, button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+    button {
+      background-color: #e27373;
+      color: white;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #d15f5f;
+    }
+  </style>
+</head>
+<body>
+  <h2>TK｜Kiwi 各國代購 下單處（批發）</h2>
+  <form id="orderForm">
+    <label for="編號">編號</label>
+    <input type="text" name="編號" required />
+
+    <label for="圖片">上傳商品圖片（含金額截圖）</label>
+    <input type="file" id="圖片" name="圖片" accept="image/*" required />
+
+    <label for="下單數量">下單數量</label>
+    <input type="number" name="下單數量" required />
+
+    <label for="備註">備註</label>
+    <textarea name="備註" rows="3"></textarea>
+
+    <label>
+      <input type="checkbox" name="批群記事本規則" value="我已同意" required />
+      我已閱讀且同意所有代購規則，不隨意取消或更換
+    </label>
+
+    <button type="submit">送出訂單</button>
+  </form>
+
+  <script>
+    document.getElementById("orderForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      const form = e.target;
+      const fileInput = document.getElementById("圖片");
+      const file = fileInput.files[0];
+      const reader = new FileReader();
+
+      reader.onload = async function() {
+        const base64Image = reader.result.split(',')[1];
+        const data = {
+          編號: form["編號"].value,
+          圖片: base64Image,
+          檔名: file.name,
+          下單數量: form["下單數量"].value,
+          備註: form["備註"].value,
+          承諾: form["批群記事本規則"].checked ? "同意" : "不同意"
+        };
+
+        const response = await fetch("YOUR_DEPLOYED_SCRIPT_URL", {
+          method: "POST",
+          body: JSON.stringify(data),
+          headers: { "Content-Type": "application/json" },
+        });
+
+        if (response.ok) {
+          alert("Kiwi 已收到您的訂單 💌 📲 如有問題請繼續聯繫 LINE");
+          window.location.href = "https://line.me/ti/p/cR8TgxU2_g";
+        } else {
+          alert("上傳失敗，請稍後再試！");
+        }
+      };
+
+      reader.readAsDataURL(file);
+    });
+  </script>
+</body>
+</html>
