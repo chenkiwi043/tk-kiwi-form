@@ -75,20 +75,19 @@
 reader.onloadend = async function () {
   const base64Image = reader.result;
 
-  const payload = {
-    編號: formData.get("編號"),
-    圖片: base64Image,
-    下單數量: formData.get("下單數量"),
-    備註: formData.get("備註"),
-    批群記事本規則: formData.get("批群記事本規則")
-  };
+  const payload = new URLSearchParams();
+  payload.append("編號", formData.get("編號"));
+  payload.append("圖片", base64Image);
+  payload.append("下單數量", formData.get("下單數量"));
+  payload.append("備註", formData.get("備註"));
+  payload.append("批群記事本規則", formData.get("批群記事本規則"));
 
   try {
     const res = await fetch("https://script.google.com/macros/s/AKfycbyWTobu3vB-bakZULJmopGpG8DCjwCyKv1l261reyDQJIlUcKtoT9wRu5ZymTDVo3XSXg/exec", {
       method: "POST",
-      body: JSON.stringify(payload),
+      body: payload,
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/x-www-form-urlencoded"
       }
     });
 
@@ -98,9 +97,8 @@ reader.onloadend = async function () {
     alert("上傳失敗，請稍後再試！");
   }
 };
+reader.readAsDataURL(file);
 
-
-    reader.readAsDataURL(file);
   });
 </script>
 
