@@ -37,7 +37,13 @@
 <body>
   <h2>TK｜Kiwi 各國代購 下單處（批發）</h2>
 
-  <form id="orderForm" target="hidden_iframe" onsubmit="handleSubmit(event)">
+  <form
+    id="orderForm"
+    method="post"
+    action="https://script.google.com/macros/s/AKfycbwQ3fEbz_l9M7M0R3fEslomBd87dgdleoZKs-Y13e5X2no2FRJj8ZOz80SIWGVYsUWW/exec"
+    target="hidden_iframe"
+    onsubmit="handleSubmit(event)">
+
     <label>編號</label>
     <input type="text" name="編號" required />
 
@@ -77,8 +83,7 @@
       reader.onloadend = function () {
         document.getElementById("圖片base64").value = reader.result;
 
-        // ✅ 改為實際 Apps Script 網址
-        form.action = "https://script.google.com/macros/s/AKfycbwQ3fEbz_l9M7M0R3fEslomBd87dgdleoZKs-Y13e5X2no2FRJj8ZOz80SIWGVYsUWW/exec";
+        // 提交表單
         form.submit();
 
         setTimeout(() => {
