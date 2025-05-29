@@ -72,32 +72,33 @@
     }
 
     const reader = new FileReader();
-    reader.onloadend = async function () {
-      const base64Image = reader.result;
+reader.onloadend = async function () {
+  const base64Image = reader.result;
 
-      const payload = {
-  編號: formData.get("編號"),
-  圖片: base64Image,
-  下單數量: formData.get("下單數量"),
-  備註: formData.get("備註"),
-  批群記事本規則: formData.get("批群記事本規則")
+  const payload = {
+    編號: formData.get("編號"),
+    圖片: base64Image,
+    下單數量: formData.get("下單數量"),
+    備註: formData.get("備註"),
+    批群記事本規則: formData.get("批群記事本規則")
+  };
+
+  try {
+    const res = await fetch("https://script.google.com/macros/s/AKfycbyWTobu3vB-bakZULJmopGpG8DCjwCyKv1l261reyDQJIlUcKtoT9wRu5ZymTDVo3XSXg/exec", {
+      method: "POST",
+      body: JSON.stringify(payload),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+
+    alert("Kiwi 已收到您的訂單 💌 📲 如有問題請繼續聯繫 LINE");
+    window.location.href = "https://line.me/ti/p/cR8TgxU2_g";
+  } catch (error) {
+    alert("上傳失敗，請稍後再試！");
+  }
 };
 
-const res = await fetch("https://script.google.com/macros/s/AKfycbyWTobu3vB-bakZULJmopGpG8DCjwCyKv1l261reyDQJIlUcKtoT9wRu5ZymTDVo3XSXg/exec", {
-  method: "POST",
-  body: JSON.stringify(payload),
-  headers: {
-    "Content-Type": "application/json"
-  }
-});
-
-
-        alert("Kiwi 已收到您的訂單 💌 📲 如有問題請繼續聯繫 LINE");
-        window.location.href = "https://line.me/ti/p/cR8TgxU2_g";
-      } catch (error) {
-        alert("上傳失敗，請稍後再試！");
-      }
-    };
 
     reader.readAsDataURL(file);
   });
